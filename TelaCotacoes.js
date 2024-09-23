@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import styles from './styles';
 
-const TelaCotacoes = () => {
+const TelaCotacoes = ({ currency }) => {
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchQuotes = async () => {
+      if (!currency) return; // Retorna se a moeda não estiver definida
+
       try {
-        const response = await fetch('https://api.exchangerate-api.com/v4/latest/USD');
+        const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${currency}`);
         const data = await response.json();
         setQuotes(Object.entries(data.rates).map(([currency, value]) => ({ currency, value })));
       } catch (error) {
@@ -23,7 +25,7 @@ const TelaCotacoes = () => {
     const intervalId = setInterval(fetchQuotes, 60000); // Atualiza a cada 60 segundos
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [currency]); // Dependência em currency
 
   return (
     <View style={styles.container}>
@@ -35,7 +37,7 @@ const TelaCotacoes = () => {
           quotes.map((quote, index) => (
             <View key={index} style={styles.quoteContainer}>
               <Text style={styles.quoteTitle}>{quote.currency}</Text>
-              <Text style={styles.quoteValue}>${quote.value.toFixed(2)}</Text>
+              <Text style={styles.quoteValue}>{quote.value.toFixed(2)}</Text>
             </View>
           ))
         )}
