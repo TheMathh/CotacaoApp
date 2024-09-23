@@ -50,7 +50,7 @@ const TelaPerfil = () => {
           </TouchableOpacity>
         </ScrollView>
       ) : (
-        <View>
+        <View style={styles.profileInfoContainer}>
           <Text style={styles.profileInfo}>Nome: {name}</Text>
           <Text style={styles.profileInfo}>Email: {email}</Text>
           <Text style={styles.profileInfo}>Telefone: {phone}</Text>
