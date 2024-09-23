@@ -1,19 +1,37 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import styles from './styles';
+import CardComponent from './CardComponent'; // Importando o componente do cartão
 
 const TelaPagamento = () => {
-  const [paymentMethods, setPaymentMethods] = useState([
-    { id: '1', method: 'Cartão de Crédito' },
-    { id: '2', method: 'PayPal' },
-    { id: '3', method: 'Transferência Bancária' },
-  ]);
-  const [newMethod, setNewMethod] = useState('');
+  const [paymentMethods, setPaymentMethods] = useState([]);
+  const [newCardNumber, setNewCardNumber] = useState('');
+  const [newCardHolder, setNewCardHolder] = useState('');
+  const [newExpiryDate, setNewExpiryDate] = useState('');
+  const [newCvc, setNewCvc] = useState('');
 
   const addPaymentMethod = () => {
-    if (newMethod.trim()) {
-      setPaymentMethods([...paymentMethods, { id: Date.now().toString(), method: newMethod }]);
-      setNewMethod('');
+    if (
+      newCardNumber.trim() &&
+      newCardHolder.trim() &&
+      newExpiryDate.trim() &&
+      newCvc.trim()
+    ) {
+      setPaymentMethods([
+        ...paymentMethods,
+        {
+          id: Date.now().toString(),
+          cardNumber: newCardNumber,
+          cardHolder: newCardHolder,
+          expiryDate: newExpiryDate,
+          cvc: newCvc,
+        },
+      ]);
+      // Resetar campos de entrada
+      setNewCardNumber('');
+      setNewCardHolder('');
+      setNewExpiryDate('');
+      setNewCvc('');
     }
   };
 
@@ -22,13 +40,37 @@ const TelaPagamento = () => {
       <Text style={styles.title}>Formas de Pagamento</Text>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {paymentMethods.map(method => (
-          <Text key={method.id} style={styles.paymentInfo}>{method.method}</Text>
+          <CardComponent
+            key={method.id}
+            cardNumber={method.cardNumber}
+            cardHolder={method.cardHolder}
+            expiryDate={method.expiryDate}
+          />
         ))}
         <TextInput
           style={styles.input}
-          value={newMethod}
-          onChangeText={setNewMethod}
-          placeholder="Adicionar nova forma de pagamento"
+          value={newCardNumber}
+          onChangeText={setNewCardNumber}
+          placeholder="Número do Cartão"
+        />
+        <TextInput
+          style={styles.input}
+          value={newCardHolder}
+          onChangeText={setNewCardHolder}
+          placeholder="Nome do Titular"
+        />
+        <TextInput
+          style={styles.input}
+          value={newExpiryDate}
+          onChangeText={setNewExpiryDate}
+          placeholder="Validade (MM/AA)"
+        />
+        <TextInput
+          style={styles.input}
+          value={newCvc}
+          onChangeText={setNewCvc}
+          placeholder="Código de Segurança (CVC)"
+          secureTextEntry
         />
         <TouchableOpacity style={styles.button} onPress={addPaymentMethod}>
           <Text style={styles.buttonText}>Adicionar</Text>
