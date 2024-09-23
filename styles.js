@@ -16,6 +16,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
+  picker: {
+  height: 50,
+  width: '100%',
+  marginBottom: 10,
+  },
+label: {
+  fontSize: 18,
+  marginBottom: 5,
+  color: '#333',
+},
   loading: {
     fontSize: 18,
     textAlign: 'center',
@@ -72,6 +82,13 @@ const styles = StyleSheet.create({
   },
   navBar: {
     backgroundColor: '#00796b',
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#00796b',
+    marginTop: 20,
+    marginBottom: 10,
   },
 });
 
